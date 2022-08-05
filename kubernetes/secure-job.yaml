@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: secure-cli-job
+  namespace: secure
+spec:
+  ttlSecondsAfterFinished: 300
+  completions: 1
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      # v0.3.12
+      - image: ghcr.io/dsm0014/secure-cli:2799351897
+        name: secure-cli-job
+        args: ["height", "10"]
+        resources: {}
+      restartPolicy: Never
+status: {}
