@@ -1,0 +1,4 @@
+**/*secret.yaml
+cosign.key
+cosign.pub
+.idea/*
