@@ -54,10 +54,14 @@ bad_log4j_versions := {
     "2.0-alpha1"
 }
 
+
+## rename rule to 'isCompliant' in ClusterImagePolicy
+default allow = "log4shell CVE detected"
+
 ## check that any artifact is log4j-core AND the same artifact's version is infected with log4shell
-infected_log4j_present(s) {
+infected_log4j_present(predicateData) {
     some i
-    pkg := s.artifacts[i]
+    pkg := predicateData.artifacts[i]
     pkg.name == "log4j-core"
     pkg.version == bad_log4j_versions[_]
 }
@@ -65,10 +69,8 @@ infected_log4j_present(s) {
 ## input.predicate.Data comes in as a stringified JSON and must be unmarshal'd for dot references to work
 inputData := json.unmarshal(input.predicate.Data)
 
-## rename rule to 'isCompliant' in ClusterImagePolicy
-default allow = "log4shell CVE detected"
-
 ## allow when SBOM does not contain infected log4j-core version
 allow {
   not infected_log4j_present(inputData)
 }
+
